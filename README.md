@@ -1,2 +1,2 @@
 # FluentDbAccess
-A fluent data access library
+A fluent data access library for C#
