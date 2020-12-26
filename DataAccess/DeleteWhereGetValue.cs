@@ -8,16 +8,19 @@ namespace DataAccess
 {
     public class DeleteWhereGetValue<T, TProperty> where T : class
     {
-        IDatabase _database;
+        DeleteFilter<T> _deleteFilter;
+        PropertyInfo _propertyInfo;
 
-        public DeleteWhereGetValue(IDatabase database, PropertyInfo propertyInfo)
+        public DeleteWhereGetValue(DeleteFilter<T> deleteFilter, PropertyInfo propertyInfo)
         {
-            _database = database;
+            _deleteFilter = deleteFilter;
+            _propertyInfo = propertyInfo;
         }
 
         public DeleteFilter<T> Is(TProperty o)
         {
-            return new DeleteFilter<T>(_database);
+            _deleteFilter.WhereValues.Add(_propertyInfo.Name, new ValueCompare() { Value = o.ToString() });
+            return _deleteFilter;
         }
     }
 }

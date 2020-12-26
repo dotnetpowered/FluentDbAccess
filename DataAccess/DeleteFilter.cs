@@ -10,6 +10,9 @@ namespace DataAccess
     {
         IDatabase _database;
 
+        private Dictionary<string, ValueCompare> _where = new();
+        internal Dictionary<string, ValueCompare> WhereValues { get => _where; set => _where = value; }
+
         public DeleteFilter(IDatabase database)
         {
             _database = database;   
@@ -20,14 +23,13 @@ namespace DataAccess
         {
             PropertyInfo propInfo = ReflectionHelper.GetPropertyInfo<T, TProperty>(propertyLambda);
 
-            return new DeleteWhereGetValue<T, TProperty>(_database, propInfo);
+            return new DeleteWhereGetValue<T, TProperty>(this, propInfo);
         }
 
         public int Execute()
         {
-            // TODO: Build object values
             var tableName = typeof(T).Name;
-            return _database.Adapter.Delete(tableName, null);
+            return _database.Adapter.Delete(tableName, _where);
         }
     }
 

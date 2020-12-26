@@ -31,6 +31,15 @@ namespace DataAccess.Mocks
         public int Delete(string tableName, IDictionary<string, ValueCompare> where)
         {
             Console.WriteLine("Delete from " + tableName);
+            if (where.Count > 0)
+            {
+                Console.Write("  Where");
+                foreach (var kv in where)
+                {
+                    Console.Write($" {kv.Key}={kv.Value.Value}");
+                }
+                Console.WriteLine();
+            }
             return 0;
         }
 
